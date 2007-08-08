@@ -1,0 +1,84 @@
+# scim-array 
+# Copyright (C) 2007 Yu-Chun Wang <albyu35@ms57.hinet.net>
+# This file is distributed under the same license as the scim-array package.
+# Yu-Chun Wang <albyu3t@ms57.hinet.net>, 2007
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: zh-tw\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-08 01:38+0800\n"
+"PO-Revision-Date: 2007-08-07 00:23+0800\n"
+"Last-Translator: Yu-Chun Wang <albyu35@ms57.hinet.net>\n"
+"Language-Team: scim-array\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: scim_array_imengine.cpp:165
+msgid "The status of the current input method. Click to change it."
+msgstr "目前輸入法狀態，點選可切換英中輸入狀態"
+
+#: scim_array_imengine.cpp:166
+msgid "The input mode of the letters. Click to toggle between half and full."
+msgstr "全半形狀態，點選可切換全半形輸入狀態"
+
+#: scim_array_imengine.cpp:207 scim_array_imengine_setup.cpp:103
+msgid "Array"
+msgstr "行列"
+
+#: scim_array_imengine.cpp:680
+msgid "En"
+msgstr "英"
+
+#: scim_array_imengine.cpp:682
+msgid "Ch"
+msgstr "中"
+
+#: scim_array_imengine.cpp:693
+msgid "Full"
+msgstr "全"
+
+#: scim_array_imengine.cpp:697
+msgid "Half"
+msgstr "半"
+
+#: scim_array_imengine.cpp:841 scim_array_imengine.cpp:881
+msgid "special code:"
+msgstr "特別碼："
+
+#: scim_array_imengine_setup.cpp:108
+msgid "Array 30 IMEngine Module."
+msgstr "行列30輸入法模組"
+
+#: scim_array_imengine_setup.cpp:162
+msgid "Show Special Code"
+msgstr "顯示特別碼提示"
+
+#: scim_array_imengine_setup.cpp:165
+msgid "To notify if the character has the special code"
+msgstr "若該字有特別碼，則提示特別碼"
+
+#: scim_array_imengine_setup.cpp:170
+msgid "Only Special Code Input Mode"
+msgstr "特行模式"
+
+#: scim_array_imengine_setup.cpp:173
+msgid "If the character has the special code, you will be confined to use it"
+msgstr "啟動特行模式，若該字有特別碼，您必須使用特別碼輸入"
+
+#: scim_array_imengine_setup.cpp:181
+msgid "En/Ch Change Mode Key"
+msgstr "中英輸入模式切換鍵"
+
+#: scim_array_imengine_setup.cpp:205
+msgid "Half/Full Width Change Mode Key"
+msgstr "全半形輸入模式切換鍵"
+
+#: scim_array_imengine_setup.cpp:248
+msgid "Options"
+msgstr "選項"
+
+#: scim_array_imengine_setup.cpp:341
+msgid "Add Key Event"
+msgstr "加入按鍵"
