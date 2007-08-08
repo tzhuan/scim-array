@@ -111,6 +111,16 @@ static string valid_key_map[] = {
     "0-"  //;
 };
 
+/*static String full_width_lower_letters[] = {
+    "ａ","ｂ","ｃ","ｄ","ｅ","ｆ","ｇ","ｈ","ｉ","ｊ","ｋ","ｌ","ｍ","ｎ",
+    "ｏ","ｐ","ｑ","ｒ","ｓ","ｔ","ｕ","ｖ","ｗ","ｘ","ｙ","ｚ"
+};
+
+static String full_width_upper_letters[] = {
+    "Ａ","Ｂ","Ｃ","Ｄ","Ｅ","Ｆ","Ｇ","Ｈ","Ｉ","Ｊ","Ｋ","Ｌ","Ｍ",
+    "Ｎ","Ｏ","Ｐ","Ｑ","Ｒ","Ｓ","Ｔ","Ｕ","Ｖ","Ｗ","Ｘ","Ｙ","Ｚ"
+};*/
+
 using namespace scim;
 
 static ConfigPointer _scim_config (0);
@@ -284,9 +294,20 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 {
     if (key.is_key_release ()) return false;
 
-    // if in forward mode, send the key out
+    // if in forward mode
     if (m_forward)
-        return false;
+    {
+        if (m_full_width_letter)
+        {
+            char widthc = key.get_ascii_code();
+            WideString outws;
+            outws.push_back(scim_wchar_to_full_width(widthc));
+            commit_string(outws);
+            return true;
+        }
+        else
+            return false;
+    }
 
     //reset key
     if (key.code == SCIM_KEY_Escape && key.mask == 0) {
@@ -429,6 +450,16 @@ ArrayInstance::process_key_event (const KeyEvent& key)
     //other keys is not allowed when preediting
     if (m_preedit_string.length ())
         return true;
+
+    //other keys wiil be send out if the Full width mode on
+    if (m_full_width_letter)
+    {
+        char widthc = key.get_ascii_code();
+        WideString outws;
+        outws.push_back(scim_wchar_to_full_width(widthc));
+        commit_string(outws);
+        return true;
+    }
 
     return false;
 }
