@@ -111,15 +111,6 @@ static string valid_key_map[] = {
     "0-"  //;
 };
 
-/*static String full_width_lower_letters[] = {
-    "ａ","ｂ","ｃ","ｄ","ｅ","ｆ","ｇ","ｈ","ｉ","ｊ","ｋ","ｌ","ｍ","ｎ",
-    "ｏ","ｐ","ｑ","ｒ","ｓ","ｔ","ｕ","ｖ","ｗ","ｘ","ｙ","ｚ"
-};
-
-static String full_width_upper_letters[] = {
-    "Ａ","Ｂ","Ｃ","Ｄ","Ｅ","Ｆ","Ｇ","Ｈ","Ｉ","Ｊ","Ｋ","Ｌ","Ｍ",
-    "Ｎ","Ｏ","Ｐ","Ｑ","Ｒ","Ｓ","Ｔ","Ｕ","Ｖ","Ｗ","Ｘ","Ｙ","Ｚ"
-};*/
 
 using namespace scim;
 
@@ -294,6 +285,20 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 {
     if (key.is_key_release ()) return false;
 
+    // English/Chinese change mode key
+    if ( match_key_event(m_factory->m_ench_key, key))
+    {
+        trigger_property(SCIM_PROP_STATUS);
+        return true;
+    }
+
+    // Full/Half width chang mode key
+    if ( match_key_event(m_factory->m_full_half_key, key))
+    {
+        trigger_property(SCIM_PROP_LETTER);
+        return true;
+    }
+
     // if in forward mode
     if (m_forward)
     {
@@ -314,21 +319,6 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         reset ();
         return true;
     }
-
-    // English/Chinese change mode key
-    if ( match_key_event(m_factory->m_ench_key, key))
-    {
-        trigger_property(SCIM_PROP_STATUS);
-        return true;
-    }
-
-    // Full/Half width chang mode key
-    if ( match_key_event(m_factory->m_full_half_key, key))
-    {
-        trigger_property(SCIM_PROP_LETTER);
-        return true;
-    }
-
 
     //delete key
     if (key.code == SCIM_KEY_BackSpace && key.mask == 0 &&
@@ -455,8 +445,28 @@ ArrayInstance::process_key_event (const KeyEvent& key)
     if (m_full_width_letter)
     {
         char widthc = key.get_ascii_code();
+        // conver uppper <-> lower letter
+        if (widthc >= 'a' && widthc <= 'z')
+            widthc = widthc - 'a' + 'A';
+        else if (widthc >= 'A' && widthc <= 'Z')
+            widthc = widthc - 'A' + 'a';
+
         WideString outws;
         outws.push_back(scim_wchar_to_full_width(widthc));
+        commit_string(outws);
+        return true;
+    }
+    else
+    {
+        char widthc = key.get_ascii_code();
+        // conver uppper <-> lower letter
+        if (widthc >= 'a' && widthc <= 'z')
+            widthc = widthc - 'a' + 'A';
+        else if (widthc >= 'A' && widthc <= 'Z')
+            widthc = widthc - 'A' + 'a';
+
+        WideString outws;
+        outws.push_back(widthc);
         commit_string(outws);
         return true;
     }
