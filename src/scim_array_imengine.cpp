@@ -159,8 +159,15 @@ ArrayFactory::ArrayFactory (const ConfigPointer &config)
 {
     m_config = config;
 
+    SCIM_DEBUG_IMENGINE(1) << "Start loading scim-array module\n";
+
+    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
     arrayCins[0] = new ArrayCIN(SCIM_ARRAY_MAIN_CIN_TABLE);
+
+    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
     arrayCins[1] = new ArrayCIN(SCIM_ARRAY_SHORT_CODE_CIN_TABLE);
+
+    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
     arrayCins[2] = new ArrayCIN(SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
 
     m_status_property.set_tip(_("The status of the current input method. Click to change it."));
@@ -535,7 +542,7 @@ ArrayInstance::space_key_press()
         }
     }
 
-    create_lookup_table(0);
+    create_lookup_table(_ScimArray::Array_Table);
     update_lookup_table(m_lookup_table);
     if (m_lookup_table.number_of_candidates() > 1)
     {
@@ -797,7 +804,7 @@ ArrayInstance::process_symbol_preedit_string()
         return;
     }
 
-    create_lookup_table(0);
+    create_lookup_table(_ScimArray::Array_Table);
 
     update_lookup_table(m_lookup_table);
 
@@ -815,12 +822,12 @@ ArrayInstance::process_preedit_string ()
 
     if (m_preedit_string.length() <= 2)
     {
-        create_lookup_table(1);
+        create_lookup_table(_ScimArray::Array_Short);
         show_pre_special_code(m_preedit_string);
     }
     else
     {
-        create_lookup_table(0);
+        create_lookup_table(_ScimArray::Array_Table);
         hide_aux_string();
     }
 

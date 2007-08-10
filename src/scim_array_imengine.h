@@ -32,6 +32,16 @@
 
 using namespace scim;
 
+namespace _ScimArray
+{
+    enum EnumTable
+    {
+        Array_Table = 0,
+        Array_Short = 1,
+        Array_Special = 2
+    };
+};
+
 class ArrayFactory : public IMEngineFactoryBase
 {
     friend class ArrayInstance;
