@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
-"POT-Creation-Date: 2007-08-09 04:45+0800\n"
+"POT-Creation-Date: 2007-08-11 00:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,35 +16,35 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/scim_array_imengine.cpp:166
+#: src/scim_array_imengine.cpp:173
 msgid "The status of the current input method. Click to change it."
 msgstr ""
 
-#: src/scim_array_imengine.cpp:167
+#: src/scim_array_imengine.cpp:174
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr ""
 
-#: src/scim_array_imengine.cpp:208 src/scim_array_imengine_setup.cpp:103
+#: src/scim_array_imengine.cpp:215 src/scim_array_imengine_setup.cpp:103
 msgid "Array"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:721
+#: src/scim_array_imengine.cpp:755
 msgid "En"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:723
+#: src/scim_array_imengine.cpp:757
 msgid "Ch"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:734
+#: src/scim_array_imengine.cpp:768
 msgid "Full"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:738
+#: src/scim_array_imengine.cpp:772
 msgid "Half"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:882 src/scim_array_imengine.cpp:922
+#: src/scim_array_imengine.cpp:916 src/scim_array_imengine.cpp:956
 msgid "special code:"
 msgstr ""
 
