@@ -347,7 +347,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
          (key.code == SCIM_KEY_comma) || (key.code == SCIM_KEY_period) ||
          (key.code == SCIM_KEY_semicolon) || (key.code == SCIM_KEY_slash))
             &&
-        (key.mask == 0)) // || key.is_shift_down ()))
+        (key.mask == 0))
     {
         if (m_preedit_string.length () >=  m_max_preedit_len)
             return true;
@@ -395,7 +395,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         WideString inkey = m_preedit_string;
 
         // key "w" to enable the symbol input
-        if (!m_preedit_string.compare(utf8_mbstowcs("w")))
+        if (m_preedit_string.compare(utf8_mbstowcs("w")) == 0)
         {
             ucs4_t ascii = (ucs4_t) tolower (key.get_ascii_code ());
             m_preedit_string.push_back (ascii);
@@ -412,7 +412,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 
         WideString cmtstr = m_lookup_table.get_candidate_in_current_page(selectnum);
 
-        if (cmtstr.length() && cmtstr.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR)))
+        if (cmtstr.length() && cmtstr.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR)) != 0)
         {
             if (m_special_code_only)
             {
@@ -454,55 +454,22 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         return true;
 
     //other keys wiil be send out if the Full width mode on
-    //if ( (key.code >= SCIM_KEY_a && key.code <= SCIM_KEY_z) ||
-    //     (key.code >= SCIM_KEY_plus && key.code <= SCIM_KEY_question))
     if ( key.code >= SCIM_KEY_space && key.code <= SCIM_KEY_asciitilde)
     {
+        WideString outws;
+        char widthc = key.get_ascii_code();
+
+        if (widthc >= 'A' && widthc <= 'Z')
+            if (!key.is_caps_lock_down())
+                widthc = widthc - 'A' + 'a';
+
         if (m_full_width_letter)
-        {
-            WideString outws;
-            char widthc = key.get_ascii_code();
-
-            if (widthc >= 'A' && widthc <= 'Z')
-            {
-                if (key.is_caps_lock_down())
-                    outws.push_back(scim_wchar_to_full_width(widthc));
-                else
-                {
-                    widthc = widthc - 'A' + 'a';
-                    outws.push_back(scim_wchar_to_full_width(widthc));
-                }
-            }
-            else
-            {
-                outws.push_back(scim_wchar_to_full_width(widthc));
-            }
-            commit_string(outws);
-            return true;
-        }
+            outws.push_back(scim_wchar_to_full_width(widthc));
         else
-        {
-            char widthc = key.get_ascii_code();
-            WideString outws;
+            outws.push_back(widthc);
 
-            if (widthc >= 'A' && widthc <= 'Z')
-            {
-                if (key.is_caps_lock_down())
-                    outws.push_back(widthc);
-                else
-                {
-                    widthc = widthc - 'A' + 'a';
-                    outws.push_back(widthc);
-                }
-            }
-            else
-            {
-                outws.push_back(widthc);
-            }
-
-            commit_string(outws);
-            return true;
-        }
+        commit_string(outws);
+        return true;
     }
 
     return false;
