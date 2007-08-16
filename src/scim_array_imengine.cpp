@@ -454,7 +454,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         return true;
 
     //other keys wiil be send out if the Full width mode on
-    if ( key.code >= SCIM_KEY_space && key.code <= SCIM_KEY_asciitilde)
+    if ( (key.code >= SCIM_KEY_space && key.code <= SCIM_KEY_asciitilde) && (key.mask == 0 || key.is_shift_down()))
     {
         WideString outws;
         char widthc = key.get_ascii_code();
