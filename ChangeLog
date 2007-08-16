@@ -1,3 +1,6 @@
+2007-08-16
+	* scim_array_imengine.cpp: prevent to catch the composed key, like Ctrl + C
+
 2007-08-06  gettextize  <bug-gnu-gettext@gnu.org>
 
 	* Makefile.am (SUBDIRS): Add intl, po.
