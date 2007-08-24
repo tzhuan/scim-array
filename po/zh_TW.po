@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zh-tw\n"
-"Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
-"POT-Creation-Date: 2007-08-11 22:55+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-24 23:54+0800\n"
 "PO-Revision-Date: 2007-08-07 00:23+0800\n"
 "Last-Translator: Yu-Chun Wang <albyu35@ms57.hinet.net>\n"
 "Language-Team: scim-array\n"
@@ -15,70 +15,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/scim_array_imengine.cpp:173
+#: scim_array_imengine.cpp:173
 msgid "The status of the current input method. Click to change it."
 msgstr "目前輸入法狀態，點選可切換英中輸入狀態"
 
-#: src/scim_array_imengine.cpp:174
+#: scim_array_imengine.cpp:174
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr "全半形狀態，點選可切換全半形輸入狀態"
 
-#: src/scim_array_imengine.cpp:215 src/scim_array_imengine_setup.cpp:103
+#: scim_array_imengine.cpp:215 scim_array_imengine_setup.cpp:103
 msgid "Array"
 msgstr "行列"
 
-#: src/scim_array_imengine.cpp:722
+#: scim_array_imengine.cpp:722
 msgid "En"
 msgstr "英"
 
-#: src/scim_array_imengine.cpp:724
+#: scim_array_imengine.cpp:724
 msgid "Ch"
 msgstr "中"
 
-#: src/scim_array_imengine.cpp:735
+#: scim_array_imengine.cpp:735
 msgid "Full"
 msgstr "全"
 
-#: src/scim_array_imengine.cpp:739
+#: scim_array_imengine.cpp:739
 msgid "Half"
 msgstr "半"
 
-#: src/scim_array_imengine.cpp:883 src/scim_array_imengine.cpp:923
+#: scim_array_imengine.cpp:883 scim_array_imengine.cpp:923
 msgid "special code:"
 msgstr "特別碼："
 
-#: src/scim_array_imengine_setup.cpp:108
+#: scim_array_imengine_setup.cpp:108
 msgid "Array 30 IMEngine Module."
 msgstr "行列30輸入法模組"
 
-#: src/scim_array_imengine_setup.cpp:162
+#: scim_array_imengine_setup.cpp:162
 msgid "Show Special Code"
 msgstr "顯示特別碼提示"
 
-#: src/scim_array_imengine_setup.cpp:165
+#: scim_array_imengine_setup.cpp:165
 msgid "To notify if the character has the special code"
 msgstr "若該字有特別碼，則提示特別碼"
 
-#: src/scim_array_imengine_setup.cpp:170
+#: scim_array_imengine_setup.cpp:170
 msgid "Only Special Code Input Mode"
 msgstr "特行模式"
 
-#: src/scim_array_imengine_setup.cpp:173
+#: scim_array_imengine_setup.cpp:173
 msgid "If the character has the special code, you will be confined to use it"
 msgstr "啟動特行模式，若該字有特別碼，您必須使用特別碼輸入"
 
-#: src/scim_array_imengine_setup.cpp:181
-msgid "En/Ch Change Mode Key"
+#: scim_array_imengine_setup.cpp:181
+msgid "En/Ch Mode Switch Key"
 msgstr "中英輸入模式切換鍵"
 
-#: src/scim_array_imengine_setup.cpp:205
-msgid "Half/Full Width Change Mode Key"
+#: scim_array_imengine_setup.cpp:205
+msgid "Half/Full Width Mode Switch Key"
 msgstr "全半形輸入模式切換鍵"
 
-#: src/scim_array_imengine_setup.cpp:248
+#: scim_array_imengine_setup.cpp:248
 msgid "Options"
 msgstr "選項"
 
-#: src/scim_array_imengine_setup.cpp:341
-msgid "Add Key Event"
-msgstr "加入按鍵"
+#: scim_array_imengine_setup.cpp:341
+msgid "Key Event Modification"
+msgstr "修改按鍵設定"
+

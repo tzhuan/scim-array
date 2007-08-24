@@ -178,7 +178,7 @@ create_options_page(GtkTooltips *tooltips)
     GtkWidget *table = gtk_table_new ( 2, 2, TRUE );
     gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, TRUE, 0);
 
-    GtkWidget *label = gtk_label_new(_("En/Ch Change Mode Key"));
+    GtkWidget *label = gtk_label_new(_("En/Ch Mode Switch Key"));
     gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
     gtk_misc_set_padding (GTK_MISC (label), 4, 0); 
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 0, 1,
@@ -202,7 +202,7 @@ create_options_page(GtkTooltips *tooltips)
                          ec_change_key_text);
     gtk_table_attach_defaults(GTK_TABLE(table), hbox, 1, 2, 0, 1);
 
-    label = gtk_label_new(_("Half/Full Width Change Mode Key"));
+    label = gtk_label_new(_("Half/Full Width Mode Switch Key"));
     gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
     gtk_misc_set_padding (GTK_MISC (label), 4, 0); 
     gtk_table_attach(GTK_TABLE(table), label, 0, 1, 1, 2,
@@ -338,7 +338,7 @@ on_default_key_selection_clicked (GtkButton *button,
     GtkWidget *text = static_cast<GtkWidget *> (user_data);
 
     if (text) {
-        GtkWidget *dialog = scim_key_selection_dialog_new (_("Add Key Event"));
+        GtkWidget *dialog = scim_key_selection_dialog_new (_("Key Event Modification"));
         gint result;
 
         scim_key_selection_dialog_set_keys (

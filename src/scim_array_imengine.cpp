@@ -578,7 +578,6 @@ ArrayInstance::lookup_table_page_up ()
 {
     if (m_preedit_string.length () && m_lookup_table.number_of_candidates ()) {
         m_lookup_table.page_up ();
-        m_lookup_table.set_page_size (m_lookup_table.number_of_candidates ());
 
         m_lookup_table.set_candidate_labels (
             std::vector <WideString> (
@@ -593,8 +592,9 @@ void
 ArrayInstance::lookup_table_page_down ()
 {
     if (m_preedit_string.length () && m_lookup_table.number_of_candidates ()) {
-        m_lookup_table.page_down ();
-        m_lookup_table.set_page_size (m_lookup_table.number_of_candidates ());
+
+        if (!m_lookup_table.page_down ())
+            while (m_lookup_table.page_up()) ;
 
         m_lookup_table.set_candidate_labels (
             std::vector <WideString> (

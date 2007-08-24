@@ -1,3 +1,7 @@
+2007-08-24
+	* scim_array_imengine.cpp:press space make the lookup table go to the
+	first page while the table reaches the end.
+
 2007-08-16
 	* scim_array_imengine.cpp: prevent to catch the composed key, like Ctrl + C
 
