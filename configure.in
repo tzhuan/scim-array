@@ -22,7 +22,7 @@ AM_INIT_AUTOMAKE
 AM_CONFIG_HEADER([config.h])
 
 # Init gettext
-ALL_LINGUAS="zh_TW"
+ALL_LINGUAS="nl zh_TW"
 AM_GNU_GETTEXT
 
 GETTEXT_PACKAGE=scim-array
