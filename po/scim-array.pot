@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) YEAR Yu-Chun Wang
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 23:54+0800\n"
+"Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
+"POT-Creation-Date: 2007-08-25 12:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,70 +16,70 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: scim_array_imengine.cpp:173
+#: src/scim_array_imengine.cpp:173
 msgid "The status of the current input method. Click to change it."
 msgstr ""
 
-#: scim_array_imengine.cpp:174
+#: src/scim_array_imengine.cpp:174
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr ""
 
-#: scim_array_imengine.cpp:215 scim_array_imengine_setup.cpp:103
+#: src/scim_array_imengine.cpp:215 src/scim_array_imengine_setup.cpp:103
 msgid "Array"
 msgstr ""
 
-#: scim_array_imengine.cpp:722
+#: src/scim_array_imengine.cpp:722
 msgid "En"
 msgstr ""
 
-#: scim_array_imengine.cpp:724
+#: src/scim_array_imengine.cpp:724
 msgid "Ch"
 msgstr ""
 
-#: scim_array_imengine.cpp:735
+#: src/scim_array_imengine.cpp:735
 msgid "Full"
 msgstr ""
 
-#: scim_array_imengine.cpp:739
+#: src/scim_array_imengine.cpp:739
 msgid "Half"
 msgstr ""
 
-#: scim_array_imengine.cpp:883 scim_array_imengine.cpp:923
+#: src/scim_array_imengine.cpp:883 src/scim_array_imengine.cpp:923
 msgid "special code:"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:108
+#: src/scim_array_imengine_setup.cpp:108
 msgid "Array 30 IMEngine Module."
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:162
+#: src/scim_array_imengine_setup.cpp:162
 msgid "Show Special Code"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:165
+#: src/scim_array_imengine_setup.cpp:165
 msgid "To notify if the character has the special code"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:170
+#: src/scim_array_imengine_setup.cpp:170
 msgid "Only Special Code Input Mode"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:173
+#: src/scim_array_imengine_setup.cpp:173
 msgid "If the character has the special code, you will be confined to use it"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:181
+#: src/scim_array_imengine_setup.cpp:181
 msgid "En/Ch Mode Switch Key"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:205
+#: src/scim_array_imengine_setup.cpp:205
 msgid "Half/Full Width Mode Switch Key"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:248
+#: src/scim_array_imengine_setup.cpp:248
 msgid "Options"
 msgstr ""
 
-#: scim_array_imengine_setup.cpp:341
+#: src/scim_array_imengine_setup.cpp:341
 msgid "Key Event Modification"
 msgstr ""
