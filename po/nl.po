@@ -1,0 +1,89 @@
+# translation of nl.po to Nederlands
+# Ronald Stroethoff <stroet43@zonnet.nl>, 2007.
+# Copyright (C) Ronald Stroethoffi <stroet43@zonnet.nl>, 2007.
+# This file is distributed under the same license as the Scim-array package.
+msgid ""
+msgstr ""
+"Project-Id-Version: nl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-24 23:54+0800\n"
+"PO-Revision-Date: 2007-08-24 21:57+0200\n"
+"Last-Translator: Ronald Stroethoff <stroet43@zonnet.nl>\n"
+"Language-Team: Nederlands\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: scim_array_imengine.cpp:173
+msgid "The status of the current input method. Click to change it."
+msgstr "De status van de huidige invoer-methode. Hier klikken voor instellen"
+
+#: scim_array_imengine.cpp:174
+msgid "The input mode of the letters. Click to toggle between half and full."
+msgstr ""
+"De invoer-methode voor letters. Hier klikken hier voor omschakelen tussen "
+"HALVE/VOLLE breedte."
+
+#: scim_array_imengine.cpp:215 scim_array_imengine_setup.cpp:103
+msgid "Array"
+msgstr "Lijst"
+
+#: scim_array_imengine.cpp:722
+msgid "En"
+msgstr "NL"
+
+#: scim_array_imengine.cpp:724
+msgid "Ch"
+msgstr "Ch"
+
+#: scim_array_imengine.cpp:735
+msgid "Full"
+msgstr "Vol"
+
+#: scim_array_imengine.cpp:739
+msgid "Half"
+msgstr "Half"
+
+#: scim_array_imengine.cpp:883 scim_array_imengine.cpp:923
+msgid "special code:"
+msgstr "Speciale code:"
+
+#: scim_array_imengine_setup.cpp:108
+msgid "Array 30 IMEngine Module."
+msgstr "Array 30 invoer-module."
+
+#: scim_array_imengine_setup.cpp:162
+msgid "Show Special Code"
+msgstr "Toon speciale Code"
+
+#: scim_array_imengine_setup.cpp:165
+msgid "To notify if the character has the special code"
+msgstr "Maak melding als een karakter een speciale code heeft"
+
+#: scim_array_imengine_setup.cpp:170
+msgid "Only Special Code Input Mode"
+msgstr "Invoer-methode voor alleen speciale code"
+
+#: scim_array_imengine_setup.cpp:173
+msgid "If the character has the special code, you will be confined to use it"
+msgstr ""
+"Indien het karakter de speciale code heeft, dan moet de speciale code "
+"gebruikt worden"
+
+#: scim_array_imengine_setup.cpp:181
+msgid "En/Ch Mode Switch Key"
+msgstr "NL/Ch omschakel toets"
+
+#: scim_array_imengine_setup.cpp:205
+msgid "Half/Full Width Mode Switch Key"
+msgstr "Omschakelen tussen HALVE en VOLLE breedte"
+
+#: scim_array_imengine_setup.cpp:248
+msgid "Options"
+msgstr "Opties"
+
+#: scim_array_imengine_setup.cpp:341
+msgid "Key Event Modification"
+msgstr "Toets-combinatie toevoegen"
+
