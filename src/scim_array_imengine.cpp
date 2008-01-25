@@ -287,6 +287,17 @@ ArrayInstance::~ArrayInstance ()
 {
 }
 
+inline bool hasWildcard(const WideString preedit)
+{
+    for (int i = 0; i < preedit.size(); i++)
+    {
+        ucs4_t ch = preedit[i];
+        if (ch == '*' || ch == '?')
+            return true;
+    }
+    return false;
+}
+
 bool
 ArrayInstance::process_key_event (const KeyEvent& key)
 {
@@ -383,6 +394,17 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         pre_update_preedit_string (m_preedit_string);
         process_preedit_string ();
 
+        return true;
+    }
+    
+    // wildcard keys
+    if (key.code == SCIM_KEY_question || key.code == SCIM_KEY_asterisk)
+    {
+        hide_lookup_table();
+        ucs4_t ascii = (ucs4_t) tolower (key.get_ascii_code ());
+        m_preedit_string.push_back (ascii);
+        pre_update_preedit_string (m_preedit_string);
+        process_preedit_string ();
         return true;
     }
 
@@ -638,6 +660,10 @@ key_to_keyname(const char c)
         return valid_key_map[28];
     else if (c == ';')
         return valid_key_map[29];
+    else if (c == '?')
+        return "?";
+    else if (c == '*')
+        return "*";
 
     return "";
 }
@@ -787,6 +813,12 @@ ArrayInstance::process_preedit_string ()
         return;
     }
 
+    if (hasWildcard(m_preedit_string))
+    {
+        hide_lookup_table();
+        return;
+    }
+
     if (m_preedit_string.length() <= 2)
     {
         create_lookup_table(_ScimArray::Array_Short);
@@ -826,9 +858,28 @@ ArrayInstance::create_lookup_table (int mapSelect)
 
     trail.push_back(0x20);
 
+    bool isHaveWildcard = false;
+    isHaveWildcard = hasWildcard(m_preedit_string);
+
     vector<string> candidatesVec;
-    if (m_factory->arrayCins[mapSelect]->getWordsVector(
-                utf8_wcstombs(m_preedit_string), candidatesVec))
+    int rcount = 0;
+
+    if (isHaveWildcard)
+    {
+        fstream outf;
+        outf.open("/tmp/scim-array-log", ios::out);
+        outf << "Have wild card!" << endl;
+        outf.close();
+        rcount = m_factory->arrayCins[mapSelect]->getWordsVectorWithWildcard(
+                utf8_wcstombs(m_preedit_string), candidatesVec);
+    }
+    else
+    {
+        rcount = m_factory->arrayCins[mapSelect]->getWordsVector(
+                utf8_wcstombs(m_preedit_string), candidatesVec);
+    }
+
+    if (rcount)
     {
         for (int i = 0; i < candidatesVec.size(); i++)
         {
@@ -843,11 +894,14 @@ ArrayInstance::create_lookup_table (int mapSelect)
     else
     {
         trail [0] = (ucs4_t) int_to_ascii (0);
-        m_lookup_table.append_candidate(utf8_mbstowcs("⎔"));
+        m_lookup_table.append_candidate(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR));
         m_lookup_table_labels.push_back(trail);
     }
 
-    m_lookup_table.set_page_size (m_lookup_table_labels.size());
+    if (m_lookup_table_labels.size() <= 10)
+        m_lookup_table.set_page_size (m_lookup_table_labels.size());
+    else
+        m_lookup_table.set_page_size(10);
     m_lookup_table.set_candidate_labels (m_lookup_table_labels);
 
     return m_lookup_table_labels.size ();

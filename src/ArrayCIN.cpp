@@ -1,10 +1,12 @@
 #include "ArrayCIN.h"
+#include "OVWildcard.h"
 
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 
 using namespace std;
+using namespace OpenVanilla;
 
 ArrayCIN::ArrayCIN(char* fileName, bool enable_reverse)
 {
@@ -104,6 +106,29 @@ int ArrayCIN::getWordsVector(const string& key, vector<string>& outVectorRef)
     else
         outVectorRef.clear();
     return 0;    
+}
+
+int ArrayCIN::getWordsVectorWithWildcard(const string& key, vector<string>& outVectorRef)
+{
+    int size = maps.size();
+    OVWildcard wildcard(key, '?', '*', true);
+    
+    outVectorRef.clear();
+    
+    for (int i = 0; i < size; i++) {
+        const pair<string, vector<string> >& p = maps[i];
+     
+        if (wildcard.match(p.first)) {
+            const vector<string>& vs = p.second;
+            size_t j, vssize = vs.size();
+     
+            for (j = 0; j < vssize; j++) 
+                outVectorRef.push_back(vs[j]);
+        }
+    }
+        
+    return outVectorRef.size();
+
 }
 
 int ArrayCIN::getReverseWordsVector(const string& key, vector<string>& outVectorRef)

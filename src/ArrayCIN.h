@@ -47,6 +47,7 @@ public:
     ArrayCIN(char* fileName, bool enable_reverse=false);
     int getWordsVector(const string& inKey, vector<string>& outVectorRef);
     int getReverseWordsVector(const string& inKey, vector<string>& outVectorRef);
+    int getWordsVectorWithWildcard(const string& inKey, vector<string>& outVectorRef);
     ~ArrayCIN();
 
 protected:

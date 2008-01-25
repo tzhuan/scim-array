@@ -21,7 +21,7 @@ array_DEFINES		= -DSCIM_ICONDIR=\"@SCIM_ICONDIR@\" \
 					  -DSCIM_ARRAY_TABLEDIR=\"@SCIM_SHAREDIR@/Array\" \
 					  -DSCIM_ARRAY_ICON_FILE=\"@SCIM_ICONDIR@/scim-array.png\"
 
-noinst_HEADERS		= scim_array_imengine.h ArrayCIN.h
+noinst_HEADERS		= scim_array_imengine.h ArrayCIN.h OVWildcard.h
 
 moduledir		= @SCIM_MODULEDIR@/IMEngine
 module_LTLIBRARIES	= array.la

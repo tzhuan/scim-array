@@ -1,3 +1,8 @@
+2008-01-25
+	* scim_array_imengine.cpp:add wildcard support
+	* ArrayCIN.cpp: add wildcard support
+	* OVWildcard.h: add wildcard support from OpenVanilla
+
 2007-08-24
 	* scim_array_imengine.cpp:press space make the lookup table go to the
 	first page while the table reaches the end.
