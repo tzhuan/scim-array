@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
-"POT-Creation-Date: 2007-08-25 12:15+0800\n"
+"POT-Creation-Date: 2008-01-25 17:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,23 +28,23 @@ msgstr ""
 msgid "Array"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:722
+#: src/scim_array_imengine.cpp:748
 msgid "En"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:724
+#: src/scim_array_imengine.cpp:750
 msgid "Ch"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:735
+#: src/scim_array_imengine.cpp:761
 msgid "Full"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:739
+#: src/scim_array_imengine.cpp:765
 msgid "Half"
 msgstr ""
 
-#: src/scim_array_imengine.cpp:883 src/scim_array_imengine.cpp:923
+#: src/scim_array_imengine.cpp:937 src/scim_array_imengine.cpp:977
 msgid "special code:"
 msgstr ""
 

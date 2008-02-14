@@ -25,6 +25,8 @@
  *
  */
 
+#include <cstring> // for gcc 4.3 header file dependency problem
+
 #define Uses_SCIM_CONFIG_BASE
 
 #include <gtk/gtk.h>

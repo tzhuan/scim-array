@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh-tw\n"
 "Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
-"POT-Creation-Date: 2007-08-25 12:15+0800\n"
+"POT-Creation-Date: 2008-01-25 17:35+0800\n"
 "PO-Revision-Date: 2007-08-07 00:23+0800\n"
 "Last-Translator: Yu-Chun Wang <albyu35@ms57.hinet.net>\n"
 "Language-Team: scim-array\n"
@@ -27,23 +27,23 @@ msgstr "全半形狀態，點選可切換全半形輸入狀態"
 msgid "Array"
 msgstr "行列"
 
-#: src/scim_array_imengine.cpp:722
+#: src/scim_array_imengine.cpp:748
 msgid "En"
 msgstr "英"
 
-#: src/scim_array_imengine.cpp:724
+#: src/scim_array_imengine.cpp:750
 msgid "Ch"
 msgstr "中"
 
-#: src/scim_array_imengine.cpp:735
+#: src/scim_array_imengine.cpp:761
 msgid "Full"
 msgstr "全"
 
-#: src/scim_array_imengine.cpp:739
+#: src/scim_array_imengine.cpp:765
 msgid "Half"
 msgstr "半"
 
-#: src/scim_array_imengine.cpp:883 src/scim_array_imengine.cpp:923
+#: src/scim_array_imengine.cpp:937 src/scim_array_imengine.cpp:977
 msgid "special code:"
 msgstr "特別碼："
 
