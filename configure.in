@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(scim-array, 0.0.3, albyu35@ms57.hinet.net)
+AC_INIT(scim-array, 0.0.4, albyu35@ms57.hinet.net)
 #AC_CONFIG_SRCDIR([scim_array_imengine.h])
 
 AM_INIT_AUTOMAKE
@@ -15,7 +15,7 @@ AC_LANG(C++)
 
 AC_GNU_SOURCE
 
-SCIM_ARRAY_VERSION=0.0.3
+SCIM_ARRAY_VERSION=0.0.4
 
 # Init automake stuff
 AM_INIT_AUTOMAKE

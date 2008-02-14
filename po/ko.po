@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko\n"
 "Report-Msgid-Bugs-To: albyu35@ms57.hinet.net\n"
-"POT-Creation-Date: 2008-01-25 17:35+0800\n"
+"POT-Creation-Date: 2008-02-14 12:54+0800\n"
 "PO-Revision-Date: 2007-09-03 14:17+0800\n"
 "Last-Translator: Yu-Chun Wang <albyu35@ms57.hinet.net>\n"
 "Language-Team: scim-array\n"
@@ -23,7 +23,7 @@ msgstr "입력 방식 상태. 크릭하면 변환가능"
 msgid "The input mode of the letters. Click to toggle between half and full."
 msgstr "전각 문자 상태. 크릭하면 변환가능"
 
-#: src/scim_array_imengine.cpp:215 src/scim_array_imengine_setup.cpp:103
+#: src/scim_array_imengine.cpp:215 src/scim_array_imengine_setup.cpp:105
 msgid "Array"
 msgstr "행렬"
 
@@ -47,38 +47,38 @@ msgstr "반각"
 msgid "special code:"
 msgstr "특별 코드："
 
-#: src/scim_array_imengine_setup.cpp:108
+#: src/scim_array_imengine_setup.cpp:110
 msgid "Array 30 IMEngine Module."
 msgstr "행렬30입력모듈"
 
-#: src/scim_array_imengine_setup.cpp:162
+#: src/scim_array_imengine_setup.cpp:164
 msgid "Show Special Code"
 msgstr "특별 코드 보이기"
 
-#: src/scim_array_imengine_setup.cpp:165
+#: src/scim_array_imengine_setup.cpp:167
 msgid "To notify if the character has the special code"
 msgstr "이 자가 특별 코드가 있으면 특별 코드가 현시됩니다."
 
-#: src/scim_array_imengine_setup.cpp:170
+#: src/scim_array_imengine_setup.cpp:172
 msgid "Only Special Code Input Mode"
 msgstr "특별 코드 모드"
 
-#: src/scim_array_imengine_setup.cpp:173
+#: src/scim_array_imengine_setup.cpp:175
 msgid "If the character has the special code, you will be confined to use it"
 msgstr "입력한 한자가 특별 코드 있으면 특별 코드를 써야 됩니다."
 
-#: src/scim_array_imengine_setup.cpp:181
+#: src/scim_array_imengine_setup.cpp:183
 msgid "En/Ch Mode Switch Key"
 msgstr "중국어/영어 모드 변환키"
 
-#: src/scim_array_imengine_setup.cpp:205
+#: src/scim_array_imengine_setup.cpp:207
 msgid "Half/Full Width Mode Switch Key"
 msgstr "전각/반각 모드 변환키"
 
-#: src/scim_array_imengine_setup.cpp:248
+#: src/scim_array_imengine_setup.cpp:250
 msgid "Options"
 msgstr "옵션"
 
-#: src/scim_array_imengine_setup.cpp:341
+#: src/scim_array_imengine_setup.cpp:343
 msgid "Key Event Modification"
 msgstr "키 설정"
