@@ -68,6 +68,7 @@ using namespace scim;
 #define SCIM_CONFIG_IMENGINE_ARRAY_HFKEY      "/IMEngine/Array/Hfkey"
 #define SCIM_CONFIG_IMENGINE_ARRAY_SHOW_SPECIAL "/IMEngine/Array/ShowSpecial"
 #define SCIM_CONFIG_IMENGINE_ARRAY_SPECIAL_CODE_ONLY "/IMEngine/Array/SpecialCodeOnly"
+#define SCIM_CONFIG_IMENGINE_ARRAY_USE_PHRASES "/IMEngine/Array/UsePhrases"
 
 
 static GtkWidget * create_setup_window ();
@@ -130,6 +131,7 @@ static GtkWidget *ec_change_key_text = NULL;
 static GtkWidget *hf_change_key_text = NULL;
 static GtkWidget *show_special_code_button = NULL;
 static GtkWidget *special_code_only_button = NULL;
+static GtkWidget *phrases_library_button = NULL;
 
 static bool __have_changed                 = false;
 
@@ -176,6 +178,14 @@ create_options_page(GtkTooltips *tooltips)
     g_signal_connect(G_OBJECT(button), "toggled",
                      G_CALLBACK(on_default_toggle_button_toggled), NULL);
     special_code_only_button = button;
+
+    button = gtk_check_button_new_with_mnemonic(_("Use Phrase Library"));
+    gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+    gtk_tooltips_set_tip(tooltips, button,
+            _("Turn on phrase input mode. (Enable after restart)"), NULL);
+    g_signal_connect(G_OBJECT(button), "toggled",
+                     G_CALLBACK(on_default_toggle_button_toggled), NULL);
+    phrases_library_button = button;
 
     GtkWidget *table = gtk_table_new ( 2, 2, TRUE );
     gtk_box_pack_start(GTK_BOX(vbox), table, FALSE, TRUE, 0);
@@ -281,6 +291,13 @@ load_config (const ConfigPointer &config)
     is_special_code_only = config->read(String(SCIM_CONFIG_IMENGINE_ARRAY_SPECIAL_CODE_ONLY), false);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(special_code_only_button), is_special_code_only);
 
+    // Use Phrase Library
+    bool is_use_phrase_library;
+    is_use_phrase_library = config->read(
+            String(SCIM_CONFIG_IMENGINE_ARRAY_USE_PHRASES), false);
+    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(phrases_library_button),
+            is_use_phrase_library);
+
     __have_changed = false;
 }
 
@@ -304,6 +321,12 @@ save_config (const ConfigPointer &config)
     // Only Special Code Input Mode
     stat = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(special_code_only_button));
     config->write(String(SCIM_CONFIG_IMENGINE_ARRAY_SPECIAL_CODE_ONLY), (bool)stat);
+
+    // Use Phrase Library
+    stat = gtk_toggle_button_get_active(
+            GTK_TOGGLE_BUTTON(phrases_library_button));
+    config->write(String(SCIM_CONFIG_IMENGINE_ARRAY_USE_PHRASES), 
+            (bool)stat);
 
     // Half/Full Width Key
     String hfkey = gtk_entry_get_text(GTK_ENTRY(hf_change_key_text));
