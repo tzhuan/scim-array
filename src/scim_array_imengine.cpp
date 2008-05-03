@@ -159,18 +159,18 @@ ArrayFactory::ArrayFactory (const ConfigPointer &config)
 {
     m_config = config;
 
-    //SCIM_DEBUG_IMENGINE(1) << "Start loading scim-array module\n";
+    SCIM_DEBUG_IMENGINE(2) << "Start loading scim-array module\n";
 
-    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
+    SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
     arrayCins[0] = new ArrayCIN(SCIM_ARRAY_MAIN_CIN_TABLE);
 
-    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
+    SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
     arrayCins[1] = new ArrayCIN(SCIM_ARRAY_SHORT_CODE_CIN_TABLE);
 
-    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
+    SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
     arrayCins[2] = new ArrayCIN(SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
 
-    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
+    SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
     if (m_use_phrases)
         arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
     else
@@ -234,21 +234,61 @@ ArrayFactory::get_authors () const
 WideString
 ArrayFactory::get_credits () const
 {
-    String msg;
-    msg = _("SCIM Array 30 Input Method Engine ");
-    msg += _("Ver.");
-    msg += PACKAGE_VERSION;
-    msg += "\n\n";
-    msg += _("Official web site: ");
-    msg += "http://scimarray.openfoundry.org";
-
-    return utf8_mbstowcs(msg);
+    return WideString();
 }
 
 WideString
 ArrayFactory::get_help () const
 {
-    return WideString ();
+    String msg;
+
+    String enchkey;
+    String hfkey;
+
+    scim_key_list_to_string(enchkey, m_ench_key);
+    scim_key_list_to_string(hfkey, m_full_half_key);
+
+    msg = _("SCIM Array 30 Input Method Engine ");
+    msg += _("Ver.");
+    msg += PACKAGE_VERSION;
+    msg += "\n\n";
+    msg += _("Official web site: ");
+    msg += "http://scimarray.openfoundry.org\n\n\n";
+
+    msg = _("Hot Keys");
+    msg += ":\n\n";
+    msg += _("En/Ch Mode Switch Key");
+    msg += ": ";
+    msg += enchkey;
+    msg += "\n";
+    msg += _("Half/Full Width Mode Switch Key");
+    msg += ": ";
+    msg += hfkey;
+    msg += "\n\n";
+    msg += _("Options");
+    msg += ":\n\n";
+    msg += _("Show Special Code");
+    msg += ": ";
+    if (m_show_special)
+        msg += _("Enable");
+    else
+        msg += _("Disable");
+    msg += "\n";
+    msg += _("Only Special Code Input Mode");
+    msg += ": ";
+    if (m_special_code_only)
+        msg += _("Enable");
+    else
+        msg += _("Disable");
+    msg += "\n";
+    msg += _("Phrase Library");
+    msg += ": ";
+    if (m_use_phrases)
+        msg += _("Enable");
+    else
+        msg += _("Disable");
+
+    return utf8_mbstowcs(msg);
 }
 
 String
