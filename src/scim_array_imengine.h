@@ -78,6 +78,7 @@ private:
     KeyEventList                m_full_half_key;
     bool                        m_show_special;
     bool                        m_special_code_only;
+    const bool                  m_use_phrases;
 
     Connection                  m_reload_signal_connection;
 };
@@ -92,6 +93,7 @@ class ArrayInstance : public IMEngineInstanceBase
     WideString                  m_aux_string;
     const bool                  &m_show_special;
     const bool                  &m_special_code_only;
+    const bool                  &m_use_phrases;
 
     size_t                      m_max_preedit_len;
 

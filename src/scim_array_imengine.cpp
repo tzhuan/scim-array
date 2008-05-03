@@ -61,6 +61,7 @@
 #define SCIM_CONFIG_IMENGINE_ARRAY_HFKEY     "/IMEngine/Array/Hfkey"
 #define SCIM_CONFIG_IMENGINE_ARRAY_SHOW_SPECIAL "/IMEngine/Array/ShowSpecial"
 #define SCIM_CONFIG_IMENGINE_ARRAY_SPECIAL_CODE_ONLY "/IMEngine/Array/SpecialCodeOnly"
+#define SCIM_CONFIG_IMENGINE_ARRAY_USE_PHRASES  "/IMEngine/Array/UsePhrases"
 
 #define SCIM_PROP_STATUS                    "/IMEngine/Array/Status"
 #define SCIM_PROP_LETTER                    "/IMEngine/Array/Letter"
@@ -152,24 +153,28 @@ extern "C" {
 // implementation of Array
 ArrayFactory::ArrayFactory (const ConfigPointer &config) 
     : m_status_property (SCIM_PROP_STATUS, "English/Chinese Input"),
-      m_letter_property (SCIM_PROP_LETTER, "Full/Half Letter")
-
+      m_letter_property (SCIM_PROP_LETTER, "Full/Half Letter"),
+      m_use_phrases(config->read(
+                  String(SCIM_CONFIG_IMENGINE_ARRAY_USE_PHRASES), false))
 {
     m_config = config;
 
-    SCIM_DEBUG_IMENGINE(1) << "Start loading scim-array module\n";
+    //SCIM_DEBUG_IMENGINE(1) << "Start loading scim-array module\n";
 
-    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
+    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
     arrayCins[0] = new ArrayCIN(SCIM_ARRAY_MAIN_CIN_TABLE);
 
-    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
+    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
     arrayCins[1] = new ArrayCIN(SCIM_ARRAY_SHORT_CODE_CIN_TABLE);
 
-    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
+    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
     arrayCins[2] = new ArrayCIN(SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
 
-    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
-    arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
+    //SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
+    if (m_use_phrases)
+        arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
+    else
+        arrayCins[3] = NULL;
 
 
     m_status_property.set_tip(_("The status of the current input method. Click to change it."));
@@ -187,7 +192,8 @@ ArrayFactory::~ArrayFactory ()
     delete arrayCins[0];
     delete arrayCins[1];
     delete arrayCins[2];
-    delete arrayCins[3];
+    if (m_use_phrases)
+        delete arrayCins[3];
 }
 
 void
@@ -228,7 +234,15 @@ ArrayFactory::get_authors () const
 WideString
 ArrayFactory::get_credits () const
 {
-    return WideString ();
+    String msg;
+    msg = _("SCIM Array 30 Input Method Engine ");
+    msg += _("Ver.");
+    msg += PACKAGE_VERSION;
+    msg += "\n\n";
+    msg += _("Official web site: ");
+    msg += "http://scimarray.openfoundry.org";
+
+    return utf8_mbstowcs(msg);
 }
 
 WideString
@@ -273,6 +287,7 @@ ArrayInstance::ArrayInstance (ArrayFactory *factory,
                                   int id)
     : IMEngineInstanceBase (factory, encoding, id),
       m_factory (factory),
+      m_use_phrases(factory->m_use_phrases),
       m_show_special(factory->m_show_special),
       m_special_code_only(factory->m_special_code_only)
 {
@@ -393,7 +408,8 @@ ArrayInstance::process_key_event (const KeyEvent& key)
     }
 
     // apostrophe key for end of phrases
-    if (key.code == SCIM_KEY_apostrophe && m_preedit_string.length())
+    if (m_use_phrases && key.code == SCIM_KEY_apostrophe 
+            && m_preedit_string.length())
     {
         phrase_key_press();
         return true;
