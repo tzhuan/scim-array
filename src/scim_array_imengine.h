@@ -38,7 +38,8 @@ namespace _ScimArray
     {
         Array_Table = 0,
         Array_Short = 1,
-        Array_Special = 2
+        Array_Special = 2,
+        Array_Phrases = 3
     };
 };
 
@@ -61,7 +62,7 @@ public:
     virtual IMEngineInstancePointer create_instance (const String& encoding, int id = -1);
 
 protected:
-    ArrayCIN* arrayCins[3];
+    ArrayCIN* arrayCins[4];
     EnumSelectArrayCIN currentCin;
 
 private:
@@ -123,6 +124,7 @@ private:
     void pre_update_preedit_string(const WideString&);
 
     void space_key_press();
+    void phrase_key_press();
 
     void initialize_properties ();
     void refresh_status_property ();

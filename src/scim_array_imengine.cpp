@@ -71,6 +71,7 @@
 #define SCIM_ARRAY_MAIN_CIN_TABLE           (SCIM_ARRAY_TABLEDIR "/array30.cin")
 #define SCIM_ARRAY_SHORT_CODE_CIN_TABLE     (SCIM_ARRAY_TABLEDIR "/array-shortcode.cin")
 #define SCIM_ARRAY_SPECIAL_CIN_TABLE        (SCIM_ARRAY_TABLEDIR "/array-special.cin")
+#define SCIM_ARRAY_PHRASE_CIN_TABLE         (SCIM_ARRAY_TABLEDIR "/array-phrases.cin")
 
 #define SCIM_ARRAY_EMPTY_CHAR "⎔"
 
@@ -170,6 +171,10 @@ ArrayFactory::ArrayFactory (const ConfigPointer &config)
     SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
     arrayCins[2] = new ArrayCIN(SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
 
+    SCIM_DEBUG_IMENGINE(1) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
+    arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
+
+
     m_status_property.set_tip(_("The status of the current input method. Click to change it."));
     m_letter_property.set_tip(_("The input mode of the letters. Click to toggle between half and full."));
 
@@ -185,6 +190,7 @@ ArrayFactory::~ArrayFactory ()
     delete arrayCins[0];
     delete arrayCins[1];
     delete arrayCins[2];
+    delete arrayCins[3];
 }
 
 void
@@ -350,6 +356,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         m_preedit_string.erase (m_preedit_string.length () - 1, 1);
         pre_update_preedit_string (m_preedit_string);
         process_preedit_string ();
+        commit_press_count = 0;     // reset to 0 to avoid output error
         return true;
     }
 
@@ -394,6 +401,13 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         pre_update_preedit_string (m_preedit_string);
         process_preedit_string ();
 
+        return true;
+    }
+
+    // apostrophe key for end of phrases
+    if (key.code == SCIM_KEY_apostrophe && m_preedit_string.length())
+    {
+        phrase_key_press();
         return true;
     }
     
@@ -838,6 +852,26 @@ ArrayInstance::process_preedit_string ()
         hide_lookup_table ();
 }
 
+void 
+ArrayInstance::phrase_key_press()
+{
+    if (m_preedit_string.length () == 0) {
+        hide_preedit_string ();
+        hide_lookup_table ();
+        return;
+    }
+    create_lookup_table(_ScimArray::Array_Phrases);
+    hide_aux_string();
+    update_lookup_table(m_lookup_table);
+    if (m_lookup_table.number_of_candidates ())
+    {
+        commit_press_count++;
+        show_lookup_table();
+    }
+    else
+        hide_lookup_table();
+}
+
 inline static int int_to_ascii (int hex)
 {
     hex %= 10;
@@ -866,10 +900,6 @@ ArrayInstance::create_lookup_table (int mapSelect)
 
     if (isHaveWildcard)
     {
-        fstream outf;
-        outf.open("/tmp/scim-array-log", ios::out);
-        outf << "Have wild card!" << endl;
-        outf.close();
         rcount = m_factory->arrayCins[mapSelect]->getWordsVectorWithWildcard(
                 utf8_wcstombs(m_preedit_string), candidatesVec);
     }
