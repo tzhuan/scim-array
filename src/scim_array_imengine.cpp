@@ -39,9 +39,6 @@
 #include "scim.h"
 #include "scim_array_imengine.h"
 
-#include <iostream>
-#include <fstream>
-
 #ifdef HAVE_GETTEXT
   #include <libintl.h>
   #define _(String) dgettext(GETTEXT_PACKAGE,String)
@@ -373,18 +370,9 @@ ArrayInstance::process_key_event (const KeyEvent& key)
         if (commit_press_count == 1)
         {
             WideString str = m_lookup_table.get_candidate_in_current_page (0);
-            if (str.length()) {
-                if (m_special_code_only)
-                {
-                    if (!check_special_code_only(m_preedit_string, str))
-                    {
-                        commit_press_count = 0;
-                        show_special_code(m_preedit_string, str);
-                        return true;
-                    }
-                }
-                commit_string (m_lookup_table.get_candidate_in_current_page (0));
-                reset ();
+            if (str.length() && str.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR)) != 0 ) {
+                send_commit_string(m_preedit_string,
+                        m_lookup_table.get_candidate_in_current_page(0));
             }
             else
                 reset();
@@ -450,17 +438,7 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 
         if (cmtstr.length() && cmtstr.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR)) != 0)
         {
-            if (m_special_code_only)
-            {
-                if (!check_special_code_only(inkey, cmtstr))
-                {
-                    show_special_code(inkey, cmtstr);
-                    return true;
-                }
-            }
-            commit_string(cmtstr);
-            reset();
-            show_special_code(inkey, cmtstr);
+            send_commit_string(inkey, cmtstr);
             return true;
         }
         else
@@ -514,8 +492,8 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 void
 ArrayInstance::space_key_press()
 {
-    // space is the page down key when keying symbols
-    if (m_lookup_table.number_of_candidates() > 10)
+    // space is the page down key when keying symbols and phrases
+    if (m_lookup_table.number_of_candidates() > m_lookup_table.get_page_size())
     {
         lookup_table_page_down();
         return;
@@ -528,19 +506,12 @@ ArrayInstance::space_key_press()
     if (commit_press_count == 1)
     {
         WideString str = m_lookup_table.get_candidate_in_current_page (0);
+        if (str.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR)) == 0) {
+            hide_lookup_table();
+            return;
+        }
         if (str.length()) {
-            if (m_special_code_only)
-            {
-                if (!check_special_code_only(inkey, str))
-                {
-                    commit_press_count = 0;
-                    show_special_code(inkey, str);
-                    return;
-                }
-            }
-            commit_string (str);
-            reset ();
-            show_special_code(inkey, str);
+            send_commit_string(inkey, str);
             return;
         }
     }
@@ -556,19 +527,32 @@ ArrayInstance::space_key_press()
     hide_lookup_table();
     WideString str = m_lookup_table.get_candidate_in_current_page (0);
     if (str.length() && str.compare(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR))) {
-        if (m_special_code_only)
-        {
-            if (!check_special_code_only(inkey, str))
-            {
-                show_special_code(inkey, str);
-                return ;
-            }
-        }
-        commit_string (str);
-        reset ();
-        show_special_code(inkey, str);
+        send_commit_string(inkey, str);
         return;
     }
+}
+
+void
+ArrayInstance::send_commit_string(const WideString& inkey, const WideString& str)
+{
+    // phrases, no need to check specil codes
+    if (str.length() > 1)
+    {
+        commit_string(str);
+        reset();
+        return;
+    }
+    if (m_special_code_only)
+    {
+        if (!check_special_code_only(inkey, str))
+        {
+            show_special_code(inkey, str);
+            return ;
+        }
+    }
+    commit_string (str);
+    reset ();
+    show_special_code(inkey, str);
 }
 
 bool
@@ -615,10 +599,13 @@ ArrayInstance::lookup_table_page_up ()
     if (m_preedit_string.length () && m_lookup_table.number_of_candidates ()) {
         m_lookup_table.page_up ();
 
-        m_lookup_table.set_candidate_labels (
+        /*m_lookup_table.set_candidate_labels (
             std::vector <WideString> (
                 m_lookup_table_labels.begin () + m_lookup_table.get_current_page_start (),
-                m_lookup_table_labels.end ()));
+                m_lookup_table_labels.end ()));*/
+        std::vector<WideString> labels_vec;
+        create_lookup_table_labels(m_lookup_table.get_current_page_size());
+        m_lookup_table.set_candidate_labels (m_lookup_table_labels);
 
         update_lookup_table (m_lookup_table);
     }
@@ -632,10 +619,13 @@ ArrayInstance::lookup_table_page_down ()
         if (!m_lookup_table.page_down ())
             while (m_lookup_table.page_up()) ;
 
-        m_lookup_table.set_candidate_labels (
+        /*m_lookup_table.set_candidate_labels (
             std::vector <WideString> (
                 m_lookup_table_labels.begin () + m_lookup_table.get_current_page_start (),
-                m_lookup_table_labels.end ()));
+                m_lookup_table_labels.end ()));*/
+        std::vector<WideString> labels_vec;
+        create_lookup_table_labels(m_lookup_table.get_current_page_size());
+        m_lookup_table.set_candidate_labels (m_lookup_table_labels);
 
         update_lookup_table (m_lookup_table);
     }
@@ -653,6 +643,7 @@ ArrayInstance::reset ()
     m_aux_string = WideString ();
 
     m_lookup_table.clear ();
+    m_lookup_table.fix_page_size(true);
 
     commit_press_count = 0;
 
@@ -932,9 +923,31 @@ ArrayInstance::create_lookup_table (int mapSelect)
         m_lookup_table.set_page_size (m_lookup_table_labels.size());
     else
         m_lookup_table.set_page_size(10);
+
+    if (mapSelect == _ScimArray::Array_Phrases)
+    {
+        m_lookup_table.fix_page_size(false);
+    }
+
+    create_lookup_table_labels(m_lookup_table.get_current_page_size());
     m_lookup_table.set_candidate_labels (m_lookup_table_labels);
 
     return m_lookup_table_labels.size ();
+}
+
+void
+ArrayInstance::create_lookup_table_labels(int page_size) 
+{
+    WideString trail;
+    trail.push_back(0x20);
+    m_lookup_table_labels.clear();
+    for (int i = 0; i < page_size; i++)
+    {
+        trail [0] = (ucs4_t) int_to_ascii ((i % 10) + 1);
+        if ((i % 10) >= 9)
+            trail [0] = (ucs4_t) int_to_ascii (0);
+        m_lookup_table_labels.push_back(trail);
+    }
 }
 
 bool

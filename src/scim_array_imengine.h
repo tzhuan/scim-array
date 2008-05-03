@@ -123,8 +123,12 @@ private:
     void process_symbol_preedit_string ();
     void pre_update_preedit_string(const WideString&);
 
+    void create_lookup_table_labels(int page_size); 
+
     void space_key_press();
     void phrase_key_press();
+
+    void send_commit_string(const WideString&, const WideString&);
 
     void initialize_properties ();
     void refresh_status_property ();
