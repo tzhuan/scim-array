@@ -36,7 +36,9 @@
   #include <config.h>
 #endif
 
-#include "scim.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <scim.h>
 #include "scim_array_imengine.h"
 
 #ifdef HAVE_GETTEXT
@@ -70,6 +72,8 @@
 #define SCIM_ARRAY_SHORT_CODE_CIN_TABLE     (SCIM_ARRAY_TABLEDIR "/array-shortcode.cin")
 #define SCIM_ARRAY_SPECIAL_CIN_TABLE        (SCIM_ARRAY_TABLEDIR "/array-special.cin")
 #define SCIM_ARRAY_PHRASE_CIN_TABLE         (SCIM_ARRAY_TABLEDIR "/array-phrases.cin")
+#define SCIM_ARRAY_USER_PHRASES_DIR         (SCIM_PATH_DELIM_STRING ".scim" SCIM_PATH_DELIM_STRING "Array")
+#define SCIM_ARRAY_USER_PHRASES_FILE        (SCIM_PATH_DELIM_STRING ".scim" SCIM_PATH_DELIM_STRING "Array" SCIM_PATH_DELIM_STRING "phrases.cin")
 
 #define SCIM_ARRAY_EMPTY_CHAR "⎔"
 
@@ -172,7 +176,10 @@ ArrayFactory::ArrayFactory (const ConfigPointer &config)
 
     SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
     if (m_use_phrases)
+    {
         arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
+        load_user_phrases();
+    }
     else
         arrayCins[3] = NULL;
 
@@ -193,7 +200,27 @@ ArrayFactory::~ArrayFactory ()
     delete arrayCins[1];
     delete arrayCins[2];
     if (m_use_phrases)
+    {
         delete arrayCins[3];
+        delete arrayCins[4];
+    }
+}
+
+void ArrayFactory::load_user_phrases()
+{
+    struct stat dirstat, filestat;
+    String dir_path, file_path;
+    dir_path = scim_get_home_dir() + SCIM_ARRAY_USER_PHRASES_DIR;
+    stat(dir_path.c_str(), &dirstat);
+    if (S_ISDIR(dirstat.st_mode))
+    {
+        file_path = scim_get_home_dir() + SCIM_ARRAY_USER_PHRASES_FILE;
+        stat(file_path.c_str(), &filestat);
+        if (S_ISREG(filestat.st_mode))
+        {
+            arrayCins[4] = new ArrayCIN((char*)file_path.c_str());
+        }
+    }
 }
 
 void
@@ -255,7 +282,7 @@ ArrayFactory::get_help () const
     msg += _("Official web site: ");
     msg += "http://scimarray.openfoundry.org\n\n\n";
 
-    msg = _("Hot Keys");
+    msg += _("Hot Keys");
     msg += ":\n\n";
     msg += _("En/Ch Mode Switch Key");
     msg += ": ";
@@ -281,7 +308,7 @@ ArrayFactory::get_help () const
     else
         msg += _("Disable");
     msg += "\n";
-    msg += _("Phrase Library");
+    msg += _("Use Phrase Library");
     msg += ": ";
     if (m_use_phrases)
         msg += _("Enable");
@@ -397,6 +424,9 @@ ArrayInstance::process_key_event (const KeyEvent& key)
 
     //reset key
     if (key.code == SCIM_KEY_Escape && key.mask == 0) {
+        // Do not catch ESC while no key input for VI users
+        if (m_preedit_string.size() == 0)
+            return false;
         reset ();
         return true;
     }
@@ -907,7 +937,7 @@ ArrayInstance::phrase_key_press()
         hide_lookup_table ();
         return;
     }
-    create_lookup_table(_ScimArray::Array_Phrases);
+    create_phrase_lookup_table();
     hide_aux_string();
     update_lookup_table(m_lookup_table);
     if (m_lookup_table.number_of_candidates ())
@@ -988,6 +1018,59 @@ ArrayInstance::create_lookup_table (int mapSelect)
     create_lookup_table_labels(m_lookup_table.get_current_page_size());
     m_lookup_table.set_candidate_labels (m_lookup_table_labels);
 
+    return m_lookup_table_labels.size ();
+}
+
+int
+ArrayInstance::create_phrase_lookup_table()
+{
+    String mbs_code;
+    ucs4_t ucs_code;
+    WideString trail;
+    WideString wstr;
+
+    m_lookup_table.clear ();
+    m_lookup_table_labels.clear ();
+
+    vector<string> candidatesVec, pVec;
+    int rcount = 0;
+
+    if (m_factory->arrayCins[4] != NULL)
+    {
+        rcount = m_factory->arrayCins[_ScimArray::Array_UserPhrases]->getWordsVector(
+            utf8_wcstombs(m_preedit_string), candidatesVec);
+        rcount = m_factory->arrayCins[_ScimArray::Array_Phrases]->getWordsVector(
+                utf8_wcstombs(m_preedit_string), pVec);
+        vector<string>::iterator itr;
+        for(itr = pVec.begin(); itr != pVec.end(); itr++)
+            candidatesVec.push_back((*itr));
+    }
+    else
+    {
+        rcount = m_factory->arrayCins[3]->getWordsVector(
+                utf8_wcstombs(m_preedit_string), candidatesVec);
+    }
+    if (candidatesVec.size())
+    {
+        for (int i = 0; i < candidatesVec.size(); i++)
+        {
+            trail [0] = (ucs4_t) int_to_ascii ((i % 10) + 1);
+            if ((i % 10) >= 9)
+                trail [0] = (ucs4_t) int_to_ascii (0);
+            m_lookup_table.append_candidate(utf8_mbstowcs(candidatesVec[i]));
+            m_lookup_table_labels.push_back(trail);
+        }
+    }
+    else
+    {
+        trail [0] = (ucs4_t) int_to_ascii (0);
+        m_lookup_table.append_candidate(utf8_mbstowcs(SCIM_ARRAY_EMPTY_CHAR));
+        m_lookup_table_labels.push_back(trail);
+    }
+    m_lookup_table.set_page_size(10);
+    m_lookup_table.fix_page_size(false);
+    create_lookup_table_labels(m_lookup_table.get_current_page_size());
+    m_lookup_table.set_candidate_labels (m_lookup_table_labels);
     return m_lookup_table_labels.size ();
 }
 

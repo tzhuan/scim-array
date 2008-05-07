@@ -39,7 +39,8 @@ namespace _ScimArray
         Array_Table = 0,
         Array_Short = 1,
         Array_Special = 2,
-        Array_Phrases = 3
+        Array_Phrases = 3,
+        Array_UserPhrases = 4
     };
 };
 
@@ -62,12 +63,13 @@ public:
     virtual IMEngineInstancePointer create_instance (const String& encoding, int id = -1);
 
 protected:
-    ArrayCIN* arrayCins[4];
+    ArrayCIN* arrayCins[5];
     EnumSelectArrayCIN currentCin;
 
 private:
     int get_maxlen (const String &encoding);
     void reload_config (const ConfigPointer &config);
+    void load_user_phrases();
 
     Property                    m_status_property;
     Property                    m_letter_property;
@@ -121,6 +123,7 @@ public:
 
 private:
     int create_lookup_table (int);
+    int create_phrase_lookup_table();
     void process_preedit_string ();
     void process_symbol_preedit_string ();
     void pre_update_preedit_string(const WideString&);
