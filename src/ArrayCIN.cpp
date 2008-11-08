@@ -8,7 +8,7 @@
 using namespace std;
 using namespace OpenVanilla;
 
-ArrayCIN::ArrayCIN(char* fileName, bool enable_reverse)
+ArrayCIN::ArrayCIN(char* fileName, bool enable_reverse, bool sorting)
 {
     ifstream cinfile;
     string line;
@@ -17,6 +17,7 @@ ArrayCIN::ArrayCIN(char* fileName, bool enable_reverse)
     delimiters = string("\t");
 
     m_reverse = enable_reverse;
+    m_sorting = sorting;
 
     cinfile.open(fileName, ios::in);
     while (!std::getline(cinfile, line).eof())
@@ -65,7 +66,8 @@ void ArrayCIN::setMap()
 {
     vector< pair<string, string> >::const_iterator it;
 
-    stable_sort(block_buf.begin(), block_buf.end(), cmpBlockEntry());
+    if (m_sorting)
+        stable_sort(block_buf.begin(), block_buf.end(), cmpBlockEntry());
 
     for(it = block_buf.begin(); it != block_buf.end(); ++it)
         if( !maps.empty() && maps.back().first == it->first )

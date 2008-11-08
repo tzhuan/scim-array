@@ -42,9 +42,10 @@ private:
     CinMap reverse_map;
 
     bool m_reverse;
+    bool m_sorting;
 
 public:
-    ArrayCIN(char* fileName, bool enable_reverse=false);
+    ArrayCIN(char* fileName, bool enable_reverse=false, bool sorting=true);
     int getWordsVector(const string& inKey, vector<string>& outVectorRef);
     int getReverseWordsVector(const string& inKey, vector<string>& outVectorRef);
     int getWordsVectorWithWildcard(const string& inKey, vector<string>& outVectorRef);

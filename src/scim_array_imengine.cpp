@@ -166,18 +166,18 @@ ArrayFactory::ArrayFactory (const ConfigPointer &config)
     SCIM_DEBUG_IMENGINE(2) << "Start loading scim-array module\n";
 
     SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array30.cin from " << SCIM_ARRAY_MAIN_CIN_TABLE << "\n";
-    arrayCins[0] = new ArrayCIN(SCIM_ARRAY_MAIN_CIN_TABLE);
+    arrayCins[0] = new ArrayCIN((char*)SCIM_ARRAY_MAIN_CIN_TABLE);
 
     SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-shortcode.cin from " << SCIM_ARRAY_SHORT_CODE_CIN_TABLE << "\n";
-    arrayCins[1] = new ArrayCIN(SCIM_ARRAY_SHORT_CODE_CIN_TABLE);
+    arrayCins[1] = new ArrayCIN((char*)SCIM_ARRAY_SHORT_CODE_CIN_TABLE);
 
     SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-special.cin from " << SCIM_ARRAY_SPECIAL_CIN_TABLE << "\n";
-    arrayCins[2] = new ArrayCIN(SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
+    arrayCins[2] = new ArrayCIN((char*)SCIM_ARRAY_SPECIAL_CIN_TABLE, true);
 
     SCIM_DEBUG_IMENGINE(2) << "scim-array: start loading array-phrases.cin from " << SCIM_ARRAY_PHRASE_CIN_TABLE << "\n";
     if (m_use_phrases)
     {
-        arrayCins[3] = new ArrayCIN(SCIM_ARRAY_PHRASE_CIN_TABLE);
+        arrayCins[3] = new ArrayCIN((char*)SCIM_ARRAY_PHRASE_CIN_TABLE, false, false);
         load_user_phrases();
     }
     else
@@ -384,8 +384,10 @@ inline bool hasWildcard(const WideString preedit)
 }
 
 bool
-ArrayInstance::process_key_event (const KeyEvent& key)
+ArrayInstance::process_key_event (const KeyEvent& rawkey)
 {
+    KeyEvent key = rawkey.map_to_layout(SCIM_KEYBOARD_Default);
+
     if (key.is_key_release ()) return false;
 
     // English/Chinese change mode key

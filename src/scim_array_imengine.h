@@ -110,7 +110,7 @@ public:
                      int id = -1);
     virtual ~ArrayInstance ();
 
-    virtual bool process_key_event (const KeyEvent& key);
+    virtual bool process_key_event (const KeyEvent& rawkey);
     virtual void move_preedit_caret (unsigned int pos);
     virtual void select_candidate (unsigned int item);
     virtual void update_lookup_table_page_size (unsigned int page_size);
