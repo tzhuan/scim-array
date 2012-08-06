@@ -50,6 +50,16 @@
   #define bind_textdomain_codeset(domain,codeset)
 #endif
 
+#if GTK_CHECK_VERSION(2, 12, 0)
+#else
+  #define SCIM_ARRAY_USE_GTK_TOOLTIPS
+#endif
+
+#if GTK_CHECK_VERSION(3, 0, 0)
+  #define SCIM_ARRAY_USE_GTK_BOX
+#else
+#endif
+
 using namespace scim;
 
 #define scim_module_init array_imengine_setup_LTX_scim_module_init
@@ -150,39 +160,66 @@ on_default_key_selection_clicked     (GtkButton       *button,
                                       gpointer         user_data);
 
 static GtkWidget *
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
 create_options_page(GtkTooltips *tooltip);
+#else
+create_options_page();
+#endif
 
 
 // Function implementations.
 static GtkWidget *
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
 create_options_page(GtkTooltips *tooltips)
+#else
+create_options_page()
+#endif
 {
     GtkWidget *vbox;
     GtkWidget *button;
 
+#ifdef SCIM_ARRAY_USE_GTK_BOX
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+#else
     vbox = gtk_vbox_new (FALSE, 12);
+#endif
     gtk_container_set_border_width(GTK_CONTAINER(vbox), 12);
 
     button = gtk_check_button_new_with_mnemonic (_("Show Special Code"));
     gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
     gtk_tooltips_set_tip(tooltips, button,
                           _("To notify if the character has the special code"), NULL);
+#else
+    gtk_widget_set_tooltip_text(button,
+                          _("To notify if the character has the special code"));
+#endif
     g_signal_connect(G_OBJECT(button), "toggled",
                      G_CALLBACK(on_default_toggle_button_toggled), NULL);
     show_special_code_button = button;
 
     button = gtk_check_button_new_with_mnemonic(_("Only Special Code Input Mode"));
     gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
     gtk_tooltips_set_tip(tooltips, button,
                             _("If the character has the special code, you will be confined to use it"), NULL);
+#else
+    gtk_widget_set_tooltip_text(button,
+                            _("If the character has the special code, you will be confined to use it"));
+#endif
     g_signal_connect(G_OBJECT(button), "toggled",
                      G_CALLBACK(on_default_toggle_button_toggled), NULL);
     special_code_only_button = button;
 
     button = gtk_check_button_new_with_mnemonic(_("Use Phrase Library"));
     gtk_box_pack_start(GTK_BOX(vbox), button, FALSE, FALSE, 0);
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
     gtk_tooltips_set_tip(tooltips, button,
             _("Turn on phrase input mode. (Enable after restart)"), NULL);
+#else
+    gtk_widget_set_tooltip_text(button,
+            _("Turn on phrase input mode. (Enable after restart)"));
+#endif
     g_signal_connect(G_OBJECT(button), "toggled",
                      G_CALLBACK(on_default_toggle_button_toggled), NULL);
     phrases_library_button = button;
@@ -197,10 +234,14 @@ create_options_page(GtkTooltips *tooltips)
             (GtkAttachOptions) (GTK_FILL),
             (GtkAttachOptions) (GTK_FILL), 4, 4); 
 
+#ifdef SCIM_ARRAY_USE_GTK_BOX
+    GtkWidget *hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
+#else
     GtkWidget *hbox = gtk_hbox_new(FALSE, 12);
+#endif
 
     GtkWidget *entry = gtk_entry_new();
-    gtk_entry_set_editable (GTK_ENTRY (entry), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE (entry), FALSE);
     gtk_entry_set_text (GTK_ENTRY (entry), "");
     gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, TRUE, 0);
     g_signal_connect(G_OBJECT(entry), "changed",
@@ -221,10 +262,14 @@ create_options_page(GtkTooltips *tooltips)
             (GtkAttachOptions) (GTK_FILL),
             (GtkAttachOptions) (GTK_FILL), 4, 4); 
 
+#ifdef SCIM_ARRAY_USE_GTK_BOX
+    hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
+#else
     hbox = gtk_hbox_new(FALSE, 12);
+#endif
 
     entry = gtk_entry_new();
-    gtk_entry_set_editable (GTK_ENTRY (entry), FALSE);
+    gtk_editable_set_editable (GTK_EDITABLE(entry), FALSE);
     gtk_entry_set_text (GTK_ENTRY (entry), "");
     gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, TRUE, 0);
     g_signal_connect(G_OBJECT(entry), "changed",
@@ -248,15 +293,21 @@ create_setup_window ()
     GtkWidget *notebook;
     GtkWidget *label;
     GtkWidget *page;
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
     GtkTooltips *tooltips;
 
     tooltips = gtk_tooltips_new ();
+#endif
 
     // Create the Notebook.
     notebook = gtk_notebook_new ();
 
     // Create the first page.
+#ifdef SCIM_ARRAY_USE_GTK_TOOLTIPS
     page = create_options_page(tooltips);
+#else
+    page = create_options_page();
+#endif
     label = gtk_label_new (_("Options"));
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, label);
 
